@@ -1,9 +1,13 @@
 package seedu.address.logic.commands;
 
-import static seedu.address.logic.commands.CommandTestUtil.VALID_CAP;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_CAP_A;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_CAP_B;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_GOAL_TARGET_B;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_GOAL_TARGET_C;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.address.logic.commands.ProgressCommand.MESSAGE_CURRENT_CAP;
+import static seedu.address.logic.commands.ProgressCommand.MESSAGE_REQUIRED_CAP;
 import static seedu.address.logic.commands.ProgressCommand.MESSAGE_TARGET_CAP;
+import static seedu.address.logic.commands.ProgressCommand.MESSAGE_UNACHIEVABLE_CAP;
 import static seedu.address.testutil.TypicalModules.getTypicalAddressBook;
 
 import org.junit.jupiter.api.Test;
@@ -21,12 +25,13 @@ public class ProgressCommandTest {
 
     @Test
     public void execute_progressWithoutDdp_success() {
-        model.setGoalTarget(new GoalTarget(3));
+        model.setGoalTarget(new GoalTarget(VALID_GOAL_TARGET_B));
         CommandResult expectedCommandResult = new CommandResult(
-                String.format(MESSAGE_CURRENT_CAP, VALID_CAP)
-                        + String.format(MESSAGE_TARGET_CAP, VALID_CAP));
+                String.format(MESSAGE_TARGET_CAP, VALID_CAP_A)
+                        + String.format(MESSAGE_REQUIRED_CAP, VALID_CAP_A));
 
-        ModelManager expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new GoalTarget(3));
+        ModelManager expectedModel = new ModelManager(
+                getTypicalAddressBook(), new UserPrefs(), new GoalTarget(VALID_GOAL_TARGET_B));
 
         ProgressCommand progressCommand = new ProgressCommand(!isDdp);
         assertCommandSuccess(progressCommand, model, expectedCommandResult, expectedModel);
@@ -34,12 +39,27 @@ public class ProgressCommandTest {
 
     @Test
     public void execute_progressWithDdp_success() {
-        model.setGoalTarget(new GoalTarget(3));
+        model.setGoalTarget(new GoalTarget(VALID_GOAL_TARGET_B));
         CommandResult expectedCommandResult = new CommandResult(
-                String.format(MESSAGE_CURRENT_CAP, VALID_CAP)
-                        + String.format(MESSAGE_TARGET_CAP, VALID_CAP));
+                String.format(MESSAGE_TARGET_CAP, VALID_CAP_A)
+                        + String.format(MESSAGE_REQUIRED_CAP, VALID_CAP_A));
 
-        ModelManager expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new GoalTarget(3));
+        ModelManager expectedModel = new ModelManager(
+                getTypicalAddressBook(), new UserPrefs(), new GoalTarget(VALID_GOAL_TARGET_B));
+
+        ProgressCommand progressCommand = new ProgressCommand(isDdp);
+        assertCommandSuccess(progressCommand, model, expectedCommandResult, expectedModel);
+    }
+
+    @Test
+    public void execute_progressWithUnachievableGoal_success() {
+        model.setGoalTarget(new GoalTarget(VALID_GOAL_TARGET_C));
+        CommandResult expectedCommandResult = new CommandResult(
+                String.format(MESSAGE_TARGET_CAP, VALID_CAP_B)
+                        + MESSAGE_UNACHIEVABLE_CAP);
+
+        ModelManager expectedModel = new ModelManager(
+                getTypicalAddressBook(), new UserPrefs(), new GoalTarget(VALID_GOAL_TARGET_C));
 
         ProgressCommand progressCommand = new ProgressCommand(isDdp);
         assertCommandSuccess(progressCommand, model, expectedCommandResult, expectedModel);
