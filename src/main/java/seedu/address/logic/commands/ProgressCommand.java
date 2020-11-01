@@ -22,7 +22,7 @@ public class ProgressCommand extends Command {
     public static final String MESSAGE_REQUIRED_CAP = "The average CAP required for your remaining modules "
             + "to meet your target is: %.2f";
     public static final String MESSAGE_TARGET_CAP = "Your target CAP is: %.2f\n";
-    public static final String MESSAGE_UNACHIEVABLE_CAP = "Sorry! Your target CAP cannot be achieved :(\n";
+    public static final String MESSAGE_UNACHIEVABLE_CAP = "Sorry! Your target CAP cannot be achieved :(";
 
     private static final int TOTAL_MODULAR_CREDIT = 160;
     private static final int TOTAL_MODULAR_CREDIT_DDP = 200;
